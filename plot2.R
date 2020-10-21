@@ -1,0 +1,13 @@
+data<-read.table(file.choose(),sep=";",header = T)
+data[,1]<-as.Date(data[,1],format = "%d/%m/%Y")
+library(hms)
+data[,2]<-parse_hms(data[,2])
+input<-(data[,1]>="2007-02-01" & data[,1]<="2007-02-02")
+finaldata<-data[input,]
+finaldata$Global_active_power<-as.numeric(finaldata$Global_active_power)
+finaldata$Time<-paste(finaldata$Date,finaldata$Time)
+finaldata$Time<-as.POSIXct(finaldata$Time)
+png(file="plot2.png")
+par(lwd=1.5)
+plot(finaldata$Time,finaldata$Global_active_power,type = "l",ylab = "Global Active Power(kilowatts)",xlab = "")
+dev.off()
